@@ -8,10 +8,12 @@ interface Cars {
 }
 
 export class ParkingLot implements ParkingAble {
+  private id : string
   private space: number
   private cars: Cars
 
   constructor(space: number) {
+    this.id = Math.random().toString()
     this.space = space
     this.cars = {}
   }
@@ -22,6 +24,7 @@ export class ParkingLot implements ParkingAble {
       throw new Error(exceptionMessages.PARKING_LOT_HAS_NO_SPACE)
     }
     this.cars[ticket.id] = car
+    ticket.lotId = this.id
     return ticket
   }
 
@@ -33,6 +36,14 @@ export class ParkingLot implements ParkingAble {
     }
 
     throw new Error(exceptionMessages.PARKING_LOT_HAS_NO_THIS_CAR)
+  }
+
+  hasSpace() {
+    return this.space > Object.keys(this.cars).length
+  }
+
+  getLotId() {
+    return this.id
   }
 
 }
