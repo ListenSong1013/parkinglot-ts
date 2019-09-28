@@ -42,8 +42,12 @@ export class ParkingLot implements ParkingAble {
     return this.space > Object.keys(this.cars).length
   }
 
-  getLotId() {
-    return this.id
+  availableSpace() {
+    return this.space - Object.keys(this.cars).length
+  }
+
+  contains(ticket: Ticket): boolean {
+    return !!this.cars[ticket.id]
   }
 
 }

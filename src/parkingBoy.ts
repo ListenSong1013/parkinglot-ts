@@ -8,11 +8,9 @@ interface Lots {
 }
 
 export class ParkingBoy {
-  private parkingLots: ParkingLot[] = []
-  constructor(lots: number[]) {
-    for(const i of lots) {
-      this.parkingLots.push(new ParkingLot(i))
-    }
+  protected parkingLots: ParkingLot[] = []
+  constructor(lots: ParkingLot[]) {
+    this.parkingLots = lots
   }
 
   park(car: Car) {
@@ -26,9 +24,10 @@ export class ParkingBoy {
   }
 
   pick(ticket: Ticket): Car {
-    const lot = this.parkingLots.find(lot => lot.getLotId() === ticket.lotId)
+    const lot = this.parkingLots.find(lot => lot.contains(ticket))
+
     if (!lot) {
-      throw new Error(exceptionMessages.PARKING_LOT_NOT_EXIST)
+      throw new Error(exceptionMessages.PARKING_LOT_HAS_NO_THIS_CAR)
     }
     const car = lot.pick(ticket)
 

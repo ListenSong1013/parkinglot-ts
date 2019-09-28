@@ -2,13 +2,15 @@ import { ParkingBoy } from "../src/parkingBoy";
 import {Car} from "../src/car";
 import {Ticket} from "../src/ticket"
 import {exceptionMessages} from "../src/exceptionMessage";
+import {ParkingLot} from "../src/parkingLot";
 
 describe('test ParkingBoy', () => {
   // Given 有一个停车场，该停车场有1个空车位
   // When 停1辆车
   // Then 返回一张停车票
   it('should return a ticket when a parkingLot has a space', () => {
-    const parkingBoy = new ParkingBoy([1])
+    const parkingLot1 = new ParkingLot(1)
+    const parkingBoy = new ParkingBoy([parkingLot1])
     const car = new Car()
     const ticket = parkingBoy.park(car)
 
@@ -19,7 +21,7 @@ describe('test ParkingBoy', () => {
   // When 连续多辆车
   // Then 两辆车都停在第一个停车场
   it('should parked in first parkingLot when first parkingLot has enough spaces', () => {
-    const parkingBoy = new ParkingBoy([3])
+    const parkingBoy = new ParkingBoy([new ParkingLot(3)])
     const car = new Car()
     const ticket = parkingBoy.park(car)
     expect(ticket).toBeTruthy()
@@ -33,7 +35,7 @@ describe('test ParkingBoy', () => {
   // When 连续多辆车
   // Then 多辆车按顺序分别停在两个停车场上
   it('should parked cars by order when parked multi cars', () => {
-    const parkingBoy = new ParkingBoy([1,3])
+    const parkingBoy = new ParkingBoy([new ParkingLot(1), new ParkingLot(3)])
     const car = new Car()
     const ticket = parkingBoy.park(car)
     expect(ticket).toBeTruthy()
@@ -50,7 +52,7 @@ describe('test ParkingBoy', () => {
   // When 连续多辆车
   // Then 多辆车都停在第二个停车场上
   it('should parked cars in second lot when first lot has no space', () => {
-    const parkingBoy = new ParkingBoy([0,3])
+    const parkingBoy = new ParkingBoy([new ParkingLot(0), new ParkingLot(3)])
     const car = new Car()
     const ticket = parkingBoy.park(car)
     expect(ticket).toBeTruthy()
@@ -67,7 +69,7 @@ describe('test ParkingBoy', () => {
   // When 停车
   // Then 停车失败
   it('should throw error when all lot has no space', () => {
-    const parkingBoy = new ParkingBoy([0,1])
+    const parkingBoy = new ParkingBoy([new ParkingLot(0), new ParkingLot(1)])
     const car = new Car()
     const ticket = parkingBoy.park(car)
     expect(ticket).toBeTruthy()
@@ -80,7 +82,7 @@ describe('test ParkingBoy', () => {
   // When 用我的停车票取车
   // Then 取车我的车
   it('should pick my car when parkingBoy parked my car', () => {
-    const parkingBoy = new ParkingBoy([1,1])
+    const parkingBoy = new ParkingBoy([new ParkingLot(1), new ParkingLot(1)])
     const car = new Car()
     const ticket = parkingBoy.park(car)
 
@@ -92,7 +94,7 @@ describe('test ParkingBoy', () => {
   // When 用我的停车票取车
   // Then 取出我的车
   it('should pick my car when parkingBoy parked multi car', () => {
-    const parkingBoy = new ParkingBoy([1,1])
+    const parkingBoy = new ParkingBoy([new ParkingLot(1), new ParkingLot(1)])
     const car = new Car()
     const anotherCar = new Car()
     parkingBoy.park(anotherCar)
@@ -106,19 +108,19 @@ describe('test ParkingBoy', () => {
   // When 用一张无效的票取车
   // Then 取车失败
   it('should throw error when pick my car by invalid ticket', () => {
-    const parkingBoy = new ParkingBoy([1,1])
+    const parkingBoy = new ParkingBoy([new ParkingLot(1), new ParkingLot(1)])
     const car = new Car()
     parkingBoy.park(car)
 
     const ticket = new Ticket()
-    expect(() => parkingBoy.pick(ticket)).toThrow(exceptionMessages.PARKING_LOT_NOT_EXIST)
+    expect(() => parkingBoy.pick(ticket)).toThrow(exceptionMessages.PARKING_LOT_HAS_NO_THIS_CAR)
   })
 
   // Given 停了我的车的停车场
   // When 用同一张票取车两次
   // Then 第二次取车失败
   it('should throw error when pick my car twice by only one ticket', () => {
-    const parkingBoy = new ParkingBoy([1,1])
+    const parkingBoy = new ParkingBoy([new ParkingLot(1), new ParkingLot(1)])
     const car = new Car()
 
     const ticket = parkingBoy.park(car)
