@@ -50,4 +50,8 @@ export class ParkingLot implements ParkingAble {
     return !!this.cars[ticket.id]
   }
 
+  vacancyRate(): number {
+    return (this.availableSpace() / this.space)
+  }
+
 }

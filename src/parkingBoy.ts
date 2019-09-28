@@ -15,7 +15,6 @@ export class ParkingBoy {
 
   park(car: Car) {
     const lot: ParkingLot | undefined = this.parkingLots.find(lot => lot.hasSpace())
-
     if (lot) {
       return lot.park(car)
     }
