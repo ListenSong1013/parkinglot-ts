@@ -2,12 +2,9 @@ import {ParkingLot} from "./parkingLot";
 import {Car} from "./car";
 import {Ticket} from "./ticket";
 import {exceptionMessages} from "./exceptionMessage";
+import {ParkingAble} from "./parkingAble";
 
-interface Lots {
-
-}
-
-export class ParkingBoy {
+export class ParkingBoy implements ParkingAble{
   protected parkingLots: ParkingLot[] = []
   constructor(lots: ParkingLot[]) {
     this.parkingLots = lots
@@ -31,5 +28,13 @@ export class ParkingBoy {
     const car = lot.pick(ticket)
 
     return car
+  }
+
+  hasSpace(): boolean {
+    return !!this.parkingLots.find(lot => lot.hasSpace())
+  }
+
+  contains(ticket: Ticket): boolean {
+    return !!this.parkingLots.find(lot => lot.contains(ticket))
   }
 }

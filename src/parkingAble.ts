@@ -6,4 +6,7 @@ export interface ParkingAble {
 
   pick(ticket: Ticket): Car
 
+  hasSpace(): boolean
+
+  contains(ticket: Ticket): boolean
 }
